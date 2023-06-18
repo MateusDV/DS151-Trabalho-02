@@ -1,20 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// @ts-check
+
+import { useState } from 'react';
+import { View } from 'react-native';
+import Login from './components/forms/login';
+import styles from './assets/styles';
+import React from 'react';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+	const [currentView, setCurrentView] = useState('login');
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+	const navigate = (view) => {
+		setCurrentView(view);
+	};
+
+	return (
+		<View style={styles.container}>
+			{currentView === 'login' ? <Login navigate={navigate} /> : null}
+		</View>
+	);
+}
