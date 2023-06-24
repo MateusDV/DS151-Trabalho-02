@@ -1,6 +1,6 @@
 // @ts-check
 
-import db from "./sqlitedatabase";
+import db from "../sqlitedatabase";
 
 db.transaction((tx) => {
 	tx.executeSql(
