@@ -2,7 +2,7 @@
 
 import db from "../sqlitedatabase";
 
-export default class Nave {
+export default class NaveDBClient {
     constructor() {
         db.transaction((tx) => {
             tx.executeSql(
@@ -11,44 +11,44 @@ export default class Nave {
         });
     }
 
-    createStarship(starship) {
+    inserirNave(nave) {
         return new Promise((resolve, reject) => {
-            this.checkStarship(starship.name)
+            this.verificarSeNaveExiste(nave.name)
                 .then(count => count === 0 || reject(0));
 
             db.transaction((tx) => {
                 tx.executeSql(
                     "INSERT INTO Starships (name, model, manufacturer, cost_in_credits, length, max_atmosphering_speed, crew, passengers, cargo_capacity, consumables, hyperdrive_rating, MGLT, starship_class, created, edited, url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
                     [
-                        starship.name,
-                        starship.model,
-                        starship.manufacturer,
-                        starship.cost_in_credits,
-                        starship.length,
-                        starship.max_atmosphering_speed,
-                        starship.crew,
-                        starship.passengers,
-                        starship.cargo_capacity,
-                        starship.consumables,
-                        starship.hyperdrive_rating,
-                        starship.MGLT,
-                        starship.starship_class,
-                        starship.created,
-                        starship.edited,
-                        starship.url,
+                        nave.name,
+                        nave.model,
+                        nave.manufacturer,
+                        nave.cost_in_credits,
+                        nave.length,
+                        nave.max_atmosphering_speed,
+                        nave.crew,
+                        nave.passengers,
+                        nave.cargo_capacity,
+                        nave.consumables,
+                        nave.hyperdrive_rating,
+                        nave.MGLT,
+                        nave.starship_class,
+                        nave.created,
+                        nave.edited,
+                        nave.url,
                     ],
                     (_, { rowsAffected, insertId }) => {
                         if (rowsAffected > 0) resolve(insertId);
-                        else reject("Error inserting starship: " + JSON.stringify(starship));
+                        else reject("Error inserting starship: " + JSON.stringify(nave));
                     },
                     (_, error) => reject(error)
                 );
-                
+
             });
         });
     }
 
-    readAllStarships() {
+    obterTodasAsNaves() {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(
@@ -63,7 +63,7 @@ export default class Nave {
         });
     }
 
-    readStarshipById(id) {
+    obterNavePorId(id) {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(
@@ -78,12 +78,12 @@ export default class Nave {
         });
     }
 
-    checkStarship(name) {
+    verificarSeNaveExiste(nome) {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(
                     "SELECT * FROM Starships WHERE name=?;",
-                    [name],
+                    [nome],
                     (_, { rows }) => {
                         resolve(rows._array.length);
                     },
@@ -93,28 +93,28 @@ export default class Nave {
         });
     }
 
-    updateStarship(id, updatedStarship) {
+    atualizarNave(id, naveAtualizada) {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(
                     "UPDATE Starships SET name=?, model=?, manufacturer=?, cost_in_credits=?, length=?, max_atmosphering_speed=?, crew=?, passengers=?, cargo_capacity=?, consumables=?, hyperdrive_rating=?, MGLT=?, starship_class=?, created=?, edited=?, url=? WHERE id=?;",
                     [
-                        updatedStarship.name,
-                        updatedStarship.model,
-                        updatedStarship.manufacturer,
-                        updatedStarship.cost_in_credits,
-                        updatedStarship.length,
-                        updatedStarship.max_atmosphering_speed,
-                        updatedStarship.crew,
-                        updatedStarship.passengers,
-                        updatedStarship.cargo_capacity,
-                        updatedStarship.consumables,
-                        updatedStarship.hyperdrive_rating,
-                        updatedStarship.MGLT,
-                        updatedStarship.starship_class,
-                        updatedStarship.created,
-                        updatedStarship.edited,
-                        updatedStarship.url,
+                        naveAtualizada.name,
+                        naveAtualizada.model,
+                        naveAtualizada.manufacturer,
+                        naveAtualizada.cost_in_credits,
+                        naveAtualizada.length,
+                        naveAtualizada.max_atmosphering_speed,
+                        naveAtualizada.crew,
+                        naveAtualizada.passengers,
+                        naveAtualizada.cargo_capacity,
+                        naveAtualizada.consumables,
+                        naveAtualizada.hyperdrive_rating,
+                        naveAtualizada.MGLT,
+                        naveAtualizada.starship_class,
+                        naveAtualizada.created,
+                        naveAtualizada.edited,
+                        naveAtualizada.url,
                         id,
                     ],
                     (_, { rowsAffected }) => {
@@ -127,7 +127,7 @@ export default class Nave {
         });
     }
 
-    deleteStarship(id) {
+    removerNave(id) {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(

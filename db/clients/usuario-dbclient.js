@@ -17,7 +17,7 @@ db.transaction((tx) => {
 	);
 });
 
-export const create = (obj) => {
+export const inserir = (obj) => {
 	return new Promise((resolve, reject) => {
 		db.transaction((tx) => {
 			//comando SQL modificåvel
@@ -34,7 +34,7 @@ export const create = (obj) => {
 	});
 };
 
-export const authenticate = (cred) => {
+export const autenticar = (cred) => {
 	return new Promise((resolve, reject) => {
 		db.transaction((tx) => {
 			tx.executeSql(
