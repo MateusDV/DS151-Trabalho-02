@@ -10,10 +10,10 @@ db.transaction((tx) => {
 
 db.transaction((tx) => {
 	tx.executeSql(
-		"INSERT INTO Usuarios (email, senha, isAdmin) VALUES (admin@sistema.com, admin, TRUE);"
+		"INSERT INTO Usuarios (email, senha, isAdmin) VALUES ('admin', 'admin', TRUE);"
 	);
 	tx.executeSql(
-		"INSERT INTO Usuarios (email, senha, isAdmin) VALUES (usuario@sistema.com, usuario, FALSE);"
+		"INSERT INTO Usuarios (email, senha, isAdmin) VALUES ('usuario', 'usuario', FALSE);"
 	);
 });
 
@@ -37,13 +37,12 @@ export const create = (obj) => {
 export const authenticate = (cred) => {
 	return new Promise((resolve, reject) => {
 		db.transaction((tx) => {
-			// SQL query to select all rows from the table
 			tx.executeSql(
 				"SELECT isAdmin FROM Usuarios WHERE email=? AND senha=?;",
 				[cred.email, cred.senha],
 				(_, { rows }) => {
-					if (rows._array.length > 0) {
-						resolve(rows.item);
+					if (rows.length > 0) {
+						resolve(rows.item(1));
 					}
 					else {
 						reject("Usuário ou senha incorretos!");
