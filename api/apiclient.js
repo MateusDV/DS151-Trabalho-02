@@ -10,13 +10,10 @@ export default class SWApiClient {
         return resposta.json();
     }
 
-    async obterNaves(pagina = null) {
-        if(pagina) {
-            const params = new URLSearchParams({
-                page: pagina
-            });
-            return await this.get(`starships/?${params}`);
-        }
-        return await this.get(`starships/`);
+    async obterNaves(pagina) {
+        const params = new URLSearchParams({
+            page: pagina
+        });
+        return await this.get(`starships/?${params}`);
     }
 }
