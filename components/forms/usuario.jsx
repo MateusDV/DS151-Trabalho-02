@@ -6,7 +6,7 @@ import { Button, ScrollView, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native";
 import styles from "../../style/styles";
 
-const Usuario = ({ navigate, dbClient }) => {
+const Usuario = ({ navigate, dbClient, editar }) => {
     const [navesArmazenadas, setNavesArmazenadas] = useState([]);
     const [selecionada, setSelecionada] = useState(0);
     
@@ -25,6 +25,12 @@ const Usuario = ({ navigate, dbClient }) => {
             console.error(error);
         });
     }, []);
+
+    useEffect(() => {
+        if(selecionada) {
+            editar(navesArmazenadas.find(x => x.id === selecionada))
+        }
+    }, [selecionada])
 
     if (navesArmazenadas.length === 0) {
         return <Text>Carregando naves armazenadas...</Text>
