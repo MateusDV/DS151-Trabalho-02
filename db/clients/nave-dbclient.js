@@ -6,7 +6,7 @@ export default class NaveDBClient {
     constructor() {
         db.transaction((tx) => {
             tx.executeSql(
-                "CREATE TABLE IF NOT EXISTS Starships (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, model TEXT, manufacturer TEXT, cost_in_credits TEXT, length TEXT, max_atmosphering_speed TEXT, crew TEXT, passengers TEXT, cargo_capacity TEXT, consumables TEXT, hyperdrive_rating TEXT, MGLT TEXT, starship_class TEXT, created TEXT, edited TEXT, url TEXT);"
+                "CREATE TABLE IF NOT EXISTS Starships (id INTEGER PRIMARY KEY, name TEXT, model TEXT, manufacturer TEXT, cost_in_credits TEXT, length TEXT, max_atmosphering_speed TEXT, crew TEXT, passengers TEXT, cargo_capacity TEXT, consumables TEXT, hyperdrive_rating TEXT, MGLT TEXT, starship_class TEXT, created TEXT, edited TEXT);"
             );
         });
     }
@@ -14,36 +14,57 @@ export default class NaveDBClient {
     inserirNave(nave) {
         return new Promise((resolve, reject) => {
             this.verificarSeNaveExiste(nave.name)
-                .then(count => count === 0 || reject(0));
+                .then(count => {
+                    if (count === 0) {
+                        const url = nave.url.split('/');
+                        const id = url[url.length - 2];
+                        db.transaction((tx) => {
+                            tx.executeSql(
+                                "INSERT INTO Starships (id, name, model, manufacturer, cost_in_credits, length, max_atmosphering_speed, crew, passengers, cargo_capacity, consumables, hyperdrive_rating, MGLT, starship_class, created, edited) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
+                                [
+                                    id,
+                                    nave.name,
+                                    nave.model,
+                                    nave.manufacturer,
+                                    nave.cost_in_credits,
+                                    nave.length,
+                                    nave.max_atmosphering_speed,
+                                    nave.crew,
+                                    nave.passengers,
+                                    nave.cargo_capacity,
+                                    nave.consumables,
+                                    nave.hyperdrive_rating,
+                                    nave.MGLT,
+                                    nave.starship_class,
+                                    nave.created,
+                                    nave.edited,
+                                ],
+                                (_, { rowsAffected, insertId }) => {
+                                    if (rowsAffected > 0) resolve(insertId);
+                                    else reject("Error inserting starship: " + JSON.stringify(nave));
+                                },
+                                (_, error) => reject(error)
+                            );
+                        });
+                    } else {
+                        reject(0);
+                    }
+                })
+                .catch(error => reject(error));
+        });
+    }
 
+    verificarSeNaveExiste(nome) {
+        return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "INSERT INTO Starships (name, model, manufacturer, cost_in_credits, length, max_atmosphering_speed, crew, passengers, cargo_capacity, consumables, hyperdrive_rating, MGLT, starship_class, created, edited, url) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
-                    [
-                        nave.name,
-                        nave.model,
-                        nave.manufacturer,
-                        nave.cost_in_credits,
-                        nave.length,
-                        nave.max_atmosphering_speed,
-                        nave.crew,
-                        nave.passengers,
-                        nave.cargo_capacity,
-                        nave.consumables,
-                        nave.hyperdrive_rating,
-                        nave.MGLT,
-                        nave.starship_class,
-                        nave.created,
-                        nave.edited,
-                        nave.url,
-                    ],
-                    (_, { rowsAffected, insertId }) => {
-                        if (rowsAffected > 0) resolve(insertId);
-                        else reject("Error inserting starship: " + JSON.stringify(nave));
+                    "SELECT * FROM Starships WHERE name=?;",
+                    [nome],
+                    (_, { rows }) => {
+                        resolve(rows.length);
                     },
                     (_, error) => reject(error)
                 );
-
             });
         });
     }
@@ -78,20 +99,6 @@ export default class NaveDBClient {
         });
     }
 
-    verificarSeNaveExiste(nome) {
-        return new Promise((resolve, reject) => {
-            db.transaction((tx) => {
-                tx.executeSql(
-                    "SELECT * FROM Starships WHERE name=?;",
-                    [nome],
-                    (_, { rows }) => {
-                        resolve(rows._array.length);
-                    },
-                    (_, error) => reject(error)
-                );
-            });
-        });
-    }
 
     atualizarNave(id, naveAtualizada) {
         return new Promise((resolve, reject) => {
