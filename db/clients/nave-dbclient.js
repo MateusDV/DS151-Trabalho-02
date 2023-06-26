@@ -76,7 +76,7 @@ export default class NaveDBClient {
                     "SELECT * FROM Starships;",
                     [],
                     (_, { rows }) => {
-                        resolve(rows._array);
+                        resolve(rows);
                     },
                     (_, error) => reject(error)
                 );
