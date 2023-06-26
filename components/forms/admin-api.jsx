@@ -2,13 +2,13 @@
 
 import React from "react";
 import { useEffect, useState } from "react";
-import { Button, ScrollView, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { Button, ScrollView, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native";
 import styles from "../../style/styles";
 
 const AdminApi = ({ navigate, apiClient, dbClient }) => {
     const [naves, setNaves] = useState([]);
-    const [navesArmazenadas, setNavesArmazenadas] = useState([]);
+    //const [navesArmazenadas, setNavesArmazenadas] = useState([]);
     const [selecionadas, setSelecionadas] = useState([]);
 
     const [paginaAtual, setPaginaAtual] = useState(1);
@@ -33,27 +33,22 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
         });
     }, [paginaAtual]);
 
-    function armazenarNaves() {
-        
-    }
-
     //atualiza o banco de dados ao pressionar um item da lista
     useEffect(() => {
         if (naves.length > 0) {
-            
-                const selectedNave = naves.find((nave) => nave.url === selecionadas[selecionadas.length - 1]);
-                if (selectedNave) {
-                    dbClient.inserirNave(selectedNave)
-                        .then(() => {
-                            console.log("Nave inserida no banco de dados:", selectedNave);
-                            alert("Nave inserida no banco de dados com sucesso!");
-                        })
-                        .catch((error) => {
-                            console.error("Erro ao inserir nave no banco de dados:", error);
-                            alert("Erro ao inserir nave no banco de dados.");
-                        }
-                    );
-                }
+            const selectedNave = naves.find((nave) => nave.url === selecionadas[selecionadas.length - 1]);
+            if (selectedNave) {
+                dbClient.inserirNave(selectedNave)
+                    .then(() => {
+                        console.log("Nave inserida no banco de dados:", selectedNave);
+                        alert("Nave inserida no banco de dados com sucesso!");
+                    })
+                    .catch((error) => {
+                        console.error("Erro ao inserir nave no banco de dados:", error);
+                        alert("Erro ao inserir nave no banco de dados.");
+                    }
+                );
+            }
         }
     }, [selecionadas]);
 
@@ -63,6 +58,10 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
 
     return (
         <View style={styles.container}>
+            <Button
+                title="Voltar"
+                onPress={() => navigate('admin')}
+            />
             <Listagem naves={naves} selecionar={setSelecionadas} selecionadas={selecionadas} />
             <View style={{ flexDirection: "row", margin: 8, }}>
                 <Button
@@ -71,20 +70,20 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
                     onPress={() => {
                         setPaginaAtual(paginaAtual - 1);
                         setNaves([]);
-                        }
+                    }
                     }
                 />
                 <Text
-                    style={{margin:10}}
+                    style={{ margin: 10 }}
                 >
-                Página {paginaAtual}</Text>
+                    Página {paginaAtual}</Text>
                 <Button
                     title=">"
                     disabled={navegacao.ultima}
                     onPress={() => {
                         setPaginaAtual(paginaAtual + 1);
                         setNaves([]);
-                        }
+                    }
                     }
                 />
             </View>
