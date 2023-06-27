@@ -8,7 +8,6 @@ import styles from "../../style/styles";
 
 const AdminApi = ({ navigate, apiClient, dbClient }) => {
     const [naves, setNaves] = useState([]);
-    //const [navesArmazenadas, setNavesArmazenadas] = useState([]);
     const [selecionadas, setSelecionadas] = useState([]);
 
     const [paginaAtual, setPaginaAtual] = useState(1);
@@ -19,7 +18,7 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
 
     //popula a tela ao abrir ou trocar de pagina
     useEffect(() => {
-        async function preenche() {
+        async function preencher() {
             const resposta = await apiClient.obterNaves(paginaAtual);
             setNaves(resposta.results);
             setNavegacao({
@@ -27,7 +26,7 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
                 ultima: resposta.next === null
             });
         }
-        preenche().catch(error => {
+        preencher().catch(error => {
             console.error;
             alert("Erro ao conectar à api.");
         });
@@ -44,8 +43,8 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
                         alert("Nave inserida no banco de dados com sucesso!");
                     })
                     .catch((error) => {
-                        console.error("Erro ao inserir nave no banco de dados:", error);
-                        alert("Erro ao inserir nave no banco de dados.");
+                        error === 0 ? alert("Essa nave já existe no banco de dados.") : alert("Erro ao inserir nave no banco de dados.");
+                        console.error("Erro ao inserir nave no banco de dados: ", error);
                     }
                 );
             }
