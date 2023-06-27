@@ -67,6 +67,9 @@ const AdminBanco = ({ navigate, dbClient }) => {
 export default AdminBanco;
 
 const Listagem = ({ naves, selecionar }) => {
+    if(naves === null || naves === undefined){
+        return <Text>Erro ao carregar naves.</Text>
+    }
     return (
         <ScrollView contentContainerStyle={styles.container}>
             {naves.map(nave => (
