@@ -85,7 +85,8 @@ const Editar = ({ navigate, dbClient, idNave }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView>
+            <View style={styles.container}>
             {nave && renderizarPropriedades()}
             <Button
                 title="Atualizar Registro"
@@ -95,7 +96,8 @@ const Editar = ({ navigate, dbClient, idNave }) => {
                 title="Voltar"
                 onPress={() => navigate('usuario')}
             />
-        </View>
+            </View>
+        </ScrollView>
     );
 }
 

@@ -9,7 +9,7 @@ import styles from "../../style/styles";
 const AdminBanco = ({ navigate, dbClient }) => {
     const [navesArmazenadas, setNavesArmazenadas] = useState([]);
     const [selecionada, setSelecionada] = useState(0);
-    
+
     useEffect(() => {
         //atualiza o banco de dados ao pressionar um item da lista
         if (navesArmazenadas.length > 0) {
@@ -36,7 +36,7 @@ const AdminBanco = ({ navigate, dbClient }) => {
                     alert("Nenhuma nave encontrada.");
                     navigate("admin");
                 }
-                setNavesArmazenadas(Array.from(res));
+                setNavesArmazenadas(res);
             } catch (err) {
                 console.error(err);
                 alert("Erro ao acessar o banco de dados.");
@@ -56,7 +56,7 @@ const AdminBanco = ({ navigate, dbClient }) => {
     return (
         <View style={styles.container}>
             <Listagem naves={navesArmazenadas} selecionar={setSelecionada} />
-            <Button 
+            <Button
                 title="Voltar"
                 onPress={() => navigate('admin')}
             />
