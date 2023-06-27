@@ -32,6 +32,10 @@ const AdminBanco = ({ navigate, dbClient }) => {
         async function preenche() {
             try {
                 const res = await dbClient.obterTodasAsNaves();
+                if(res.length === 0){
+                    alert("Nenhuma nave encontrada.");
+                    navigate("admin");
+                }
                 setNavesArmazenadas(Array.from(res));
             } catch (err) {
                 console.error(err);
