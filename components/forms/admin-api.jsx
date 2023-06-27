@@ -57,10 +57,6 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
 
     return (
         <View style={styles.container}>
-            <Button
-                title="Voltar"
-                onPress={() => navigate('admin')}
-            />
             <Listagem naves={naves} selecionar={setSelecionadas} selecionadas={selecionadas} />
             <View style={{ flexDirection: "row", margin: 8, }}>
                 <Button
@@ -86,6 +82,10 @@ const AdminApi = ({ navigate, apiClient, dbClient }) => {
                     }
                 />
             </View>
+            <Button
+                title="Voltar"
+                onPress={() => navigate('admin')}
+            />
         </View>
     );
 }

@@ -8,14 +8,14 @@ import styles from "../../style/styles";
 
 const Usuario = ({ navigate, dbClient, editar }) => {
     const [navesArmazenadas, setNavesArmazenadas] = useState([]);
-    
+
     useEffect(() => {
         //popula a tela ao abrir ou editar uma nave
         async function preenche() {
             try {
                 const res = await dbClient.obterTodasAsNaves();
                 setNavesArmazenadas(Array.from(res));
-            } 
+            }
             catch (err) {
                 console.error(err);
                 alert("Erro ao acessar o banco de dados.");
@@ -32,23 +32,23 @@ const Usuario = ({ navigate, dbClient, editar }) => {
 
     return (
         <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
+                {navesArmazenadas.map(nave => (
+                    <TouchableOpacity
+                        style={styles.listItem}
+                        key={nave.id}
+                        onPress={() => editar(nave.id)}
+                    >
+                        <Text>
+                            {nave.model} - {nave.starship_class}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
             <Button 
                 title="Logout"
                 onPress={() => navigate('login')}
             />
-            <ScrollView contentContainerStyle={styles.container}>
-            {navesArmazenadas.map(nave => (
-                <TouchableOpacity
-                    style={styles.listItem}
-                    key={nave.id}
-                    onPress={() => editar(nave.id)}
-                >
-                    <Text>
-                        {nave.model} - {nave.starship_class}
-                    </Text>
-                </TouchableOpacity>
-            ))}
-        </ScrollView>
         </View>
     );
 }

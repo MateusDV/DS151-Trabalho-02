@@ -40,6 +40,7 @@ const AdminBanco = ({ navigate, dbClient }) => {
             } catch (err) {
                 console.error(err);
                 alert("Erro ao acessar o banco de dados.");
+                navigate("admin");
             }
         }
         preenche().catch(error => {
@@ -54,11 +55,11 @@ const AdminBanco = ({ navigate, dbClient }) => {
 
     return (
         <View style={styles.container}>
+            <Listagem naves={navesArmazenadas} selecionar={setSelecionada} />
             <Button 
                 title="Voltar"
                 onPress={() => navigate('admin')}
             />
-            <Listagem naves={navesArmazenadas} selecionar={setSelecionada} />
         </View>
     );
 }

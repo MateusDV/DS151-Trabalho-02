@@ -24,7 +24,7 @@ const Editar = ({ navigate, dbClient, idNave }) => {
         starship_class: "",
         created: "",
         edited: ""
-      };
+    };
 
     const [nave, setNave] = useState(estadoInicialNave);
 
@@ -55,7 +55,7 @@ const Editar = ({ navigate, dbClient, idNave }) => {
                 console.error(error);
                 alert("Erro ao atualizar nave.");
             }
-        );
+            );
     }
 
     if (nave === null) {
@@ -86,14 +86,14 @@ const Editar = ({ navigate, dbClient, idNave }) => {
 
     return (
         <View style={styles.container}>
-            <Button
-                title="Voltar"
-                onPress={() => navigate('usuario')}
-            />
             {nave && renderizarPropriedades()}
             <Button
                 title="Atualizar Registro"
                 onPress={() => atualizarNave()}
+            />
+            <Button
+                title="Voltar"
+                onPress={() => navigate('usuario')}
             />
         </View>
     );

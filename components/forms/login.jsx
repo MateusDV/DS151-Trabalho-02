@@ -45,13 +45,16 @@ const Login = ({ navigate }) => {
 			</Text>
 			<TextInput
 				style={styleSheet.textbox}
-				placeholder="Digite seu e-mail"
+				placeholder="Digite seu login"
 				onChangeText={(email) => setEmail(email)}
+				autoCapitalize="none"
 			/>
 			<TextInput
 				style={styleSheet.textbox}
 				placeholder="Digite sua senha"
 				onChangeText={(senha) => setSenha(senha)}
+				autoCapitalize="none"
+				secureTextEntry={true}
 			/>
 			<Button
 				title="Login"
