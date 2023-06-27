@@ -1,5 +1,6 @@
 // @ts-check
 
+import { obterIdDaURL } from "../../utilidades";
 import db from "../sqlitedatabase";
 
 export default class NaveDBClient {
@@ -12,12 +13,11 @@ export default class NaveDBClient {
     }
 
     inserirNave(nave) {
+        const id = obterIdDaURL(nave.url);
         return new Promise((resolve, reject) => {
-            this.verificarSeNaveExiste(nave.name)
+            this.verificarSeNaveExiste(id)
                 .then(count => {
                     if (count === 0) {
-                        const url = nave.url.split('/');
-                        const id = url[url.length - 2];
                         db.transaction((tx) => {
                             tx.executeSql(
                                 "INSERT INTO Starships (id, name, model, manufacturer, cost_in_credits, length, max_atmosphering_speed, crew, passengers, cargo_capacity, consumables, hyperdrive_rating, MGLT, starship_class, created, edited) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
@@ -46,7 +46,8 @@ export default class NaveDBClient {
                                 (_, error) => reject(error)
                             );
                         });
-                    } else {
+                    } 
+                    else {
                         reject(0);
                     }
                 })
@@ -54,12 +55,12 @@ export default class NaveDBClient {
         });
     }
 
-    verificarSeNaveExiste(nome) {
+    verificarSeNaveExiste(id) {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "SELECT * FROM Starships WHERE name=?;",
-                    [nome],
+                    "SELECT * FROM Starships WHERE id=?;",
+                    [id],
                     (_, { rows }) => {
                         resolve(rows.length);
                     },
@@ -91,7 +92,7 @@ export default class NaveDBClient {
                     "SELECT * FROM Starships WHERE id=?;",
                     [id],
                     (_, { rows }) => {
-                        resolve(rows._array);
+                        resolve(rows.item(0));
                     },
                     (_, error) => reject(error)
                 );
@@ -104,7 +105,7 @@ export default class NaveDBClient {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "UPDATE Starships SET name=?, model=?, manufacturer=?, cost_in_credits=?, length=?, max_atmosphering_speed=?, crew=?, passengers=?, cargo_capacity=?, consumables=?, hyperdrive_rating=?, MGLT=?, starship_class=?, created=?, edited=?, url=? WHERE id=?;",
+                    "UPDATE Starships SET name=?, model=?, manufacturer=?, cost_in_credits=?, length=?, max_atmosphering_speed=?, crew=?, passengers=?, cargo_capacity=?, consumables=?, hyperdrive_rating=?, MGLT=?, starship_class=?, created=?, edited=? WHERE id=?;",
                     [
                         naveAtualizada.name,
                         naveAtualizada.model,
@@ -121,7 +122,6 @@ export default class NaveDBClient {
                         naveAtualizada.starship_class,
                         naveAtualizada.created,
                         naveAtualizada.edited,
-                        naveAtualizada.url,
                         id,
                     ],
                     (_, { rowsAffected }) => {
