@@ -42,7 +42,7 @@ export const autenticar = (cred) => {
 				[cred.email, cred.senha],
 				(_, { rows }) => {
 					if (rows.length > 0) {
-						resolve(rows.item(1));
+						resolve(rows.item(0));
 					}
 					else {
 						reject("Usuário ou senha incorretos!");

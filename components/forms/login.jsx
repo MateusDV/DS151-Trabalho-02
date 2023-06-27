@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Text, Button, View, TextInput } from 'react-native';
-import styleSheet from '../../assets/styles'
-import { authenticate as auth } from '../../db/usuario-dbclient';
+import styleSheet from '../../style/styles'
+import { autenticar as auth } from '../../db/clients/usuario-dbclient';
 import React from 'react';
 
 
@@ -33,7 +33,7 @@ const Login = ({ navigate }) => {
 		}
 		else {
 			auth(credenciais)
-				.then(x => x > 0 ? navigate('admin') : navigate('usuario'))
+				.then(x => x.isAdmin > 0 ? navigate('admin') : navigate('usuario'))
 				.catch(x => alert(x));
 		}
 	}
