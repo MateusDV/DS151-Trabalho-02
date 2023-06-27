@@ -15,8 +15,8 @@ import Editar from './components/forms/editar';
 
 
 export default function App() {
-	const [currentView, setCurrentView] = useState('usuario');
-	const [nave, setNave] = useState(null);
+	const [currentView, setCurrentView] = useState('login');
+	const [idNave, setIdNave] = useState(null);
 
 	const apiClient = new SWApiClient();
 	const dbClient = new NaveDBClient();
@@ -25,9 +25,9 @@ export default function App() {
 		setCurrentView(view);
 	};
 
-	const acessarEdicao = (nave) => {
+	const acessarEdicao = (idNave) => {
 		setCurrentView('editar');
-		setNave(nave);
+		setIdNave(idNave);
 	}
 
 	return (
@@ -37,7 +37,7 @@ export default function App() {
 			{currentView === 'admin-api' ? <AdminApi navigate={navigate} apiClient={apiClient} dbClient={dbClient} /> : null}
 			{currentView === 'admin-banco' ? <AdminBanco navigate={navigate} dbClient={dbClient} /> : null}
 			{currentView === 'usuario' ? <Usuario navigate={navigate} dbClient={dbClient} editar={acessarEdicao} /> : null}
-			{currentView === 'editar' ? <Editar navigate={navigate} dbClient={dbClient} nave={nave}  /> : null}
+			{currentView === 'editar' ? <Editar navigate={navigate} dbClient={dbClient} idNave={idNave}  /> : null}
 		</View>
 	);
 }

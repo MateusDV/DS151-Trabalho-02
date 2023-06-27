@@ -1,0 +1,62 @@
+[
+    {
+        "name": "name",
+        "displayname": "Nome"
+    },
+    {
+        "name": "model",
+        "displayname": "Modelo"
+    },
+    {
+        "name": "manufacturer",
+        "displayname": "Fabricante"
+    },
+    {
+        "name": "cost_in_credits",
+        "displayname": "Custo em Créditos"
+    },
+    {
+        "name": "length",
+        "displayname": "Comprimento"
+    },
+    {
+        "name": "max_atmosphering_speed",
+        "displayname": "Velocidade Máxima na Atmosfera"
+    },
+    {
+        "name": "crew",
+        "displayname": "Tripulação"
+    },
+    {
+        "name": "passengers",
+        "displayname": "Passageiros"
+    },
+    {
+        "name": "cargo_capacity",
+        "displayname": "Capacidade de Carga"
+    },
+    {
+        "name": "consumables",
+        "displayname": "Consumíveis"
+    },
+    {
+        "name": "hyperdrive_rating",
+        "displayname": "Classificação de Hiperpropulsão"
+    },
+    {
+        "name": "MGLT",
+        "displayname": "Velocidade Máxima no espaço normal"
+    },
+    {
+        "name": "starship_class",
+        "displayname": "Classe da Nave Estelar"
+    },
+    {
+        "name": "created",
+        "displayname": "Criado em"
+    },
+    {
+        "name": "edited",
+        "displayname": "Editado em"
+    }
+]
