@@ -8,7 +8,6 @@ import styles from "../../style/styles";
 
 const Usuario = ({ navigate, dbClient, editar }) => {
     const [navesArmazenadas, setNavesArmazenadas] = useState([]);
-    const [selecionada, setSelecionada] = useState(0);
     
     useEffect(() => {
         //popula a tela ao abrir ou editar uma nave
@@ -16,7 +15,8 @@ const Usuario = ({ navigate, dbClient, editar }) => {
             try {
                 const res = await dbClient.obterTodasAsNaves();
                 setNavesArmazenadas(Array.from(res));
-            } catch (err) {
+            } 
+            catch (err) {
                 console.error(err);
                 alert("Erro ao acessar o banco de dados.");
             }
@@ -25,12 +25,6 @@ const Usuario = ({ navigate, dbClient, editar }) => {
             console.error(error);
         });
     }, []);
-
-    useEffect(() => {
-        if(selecionada) {
-            editar(navesArmazenadas.find(x => x.id === selecionada))
-        }
-    }, [selecionada])
 
     if (navesArmazenadas.length === 0) {
         return <Text>Carregando naves armazenadas...</Text>
@@ -42,21 +36,12 @@ const Usuario = ({ navigate, dbClient, editar }) => {
                 title="Logout"
                 onPress={() => navigate('login')}
             />
-            <Listagem naves={navesArmazenadas} selecionar={setSelecionada} />
-        </View>
-    );
-}
-
-export default Usuario;
-
-const Listagem = ({ naves, selecionar }) => {
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
-            {naves.map(nave => (
+            <ScrollView contentContainerStyle={styles.container}>
+            {navesArmazenadas.map(nave => (
                 <TouchableOpacity
                     style={styles.listItem}
                     key={nave.id}
-                    onPress={() => selecionar(nave.id)}
+                    onPress={() => editar(nave.id)}
                 >
                     <Text>
                         {nave.model} - {nave.starship_class}
@@ -64,5 +49,8 @@ const Listagem = ({ naves, selecionar }) => {
                 </TouchableOpacity>
             ))}
         </ScrollView>
+        </View>
     );
-};
+}
+
+export default Usuario;
